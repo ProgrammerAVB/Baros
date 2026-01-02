@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BarOs AI</title>
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/128/9186/9186780.png" type="image/x-icon">
+<link rel="stylesheet" href="baros.js">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 10px;
+      color: #ffffff;
+    }
+
+    .chat {
+      flex: 1;
+      width: 70%;
+      margin: 10px auto;
+      background: #1a1a1a;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 15px;
+      border-radius: 15px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #333;
+      border-bottom-right-radius: 5px;
+    }
+
+    .ai {
+      align-self: flex-start;
+      background: #252525;
+      border-bottom-left-radius: 5px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 12px;
+      padding: 3px 7px;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      background: #555;
+    }
+
+    .input-area {
+      padding: 10px;
+      background: #0d0d0d;
+      text-align: center;
+    }
+
+    input {
+      width: 65%;
+      background: #1f1f1f;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      outline: none;
+      height: 30px;
+    }
+
+    .voice-btn {
+      margin-left: 10px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .voice-btn:hover {
+      background: #555;
+    }
+
+    .imgcon {
+      position: absolute;
+      left: 0.5px;
+      bottom: 498px;
+      width: 100px;
+      height: 100px;
+      background-image: url("https://cdn-icons-png.flaticon.com/128/9186/9186780.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .menu {
+      transition: 0.7s;
+      width: 325px;
+      height: 627.1px;
+      background-color: rgb(22, 22, 22);
+      position: absolute;
+      bottom: 0px;
+      overflow: auto;
+    }
+
+    .menu2 {
+      position: absolute;
+      top: 20px;
+      left: 130px;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      transition: 0.5s;
+      background: rgba(192, 129, 192, 0.002);
+      width: 10px;
+    }
+
+    .menu2:hover {
+      transform: rotate(90deg);
+    }
+
+    .f11-msg {
+      position: fixed;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: bottom 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    .f11-msg.show {
+      bottom: 20px;
+      opacity: 1;
+    }
+    .z{
+      width: 325px;
+      background: rgba(192, 129, 192, 0.002);
+      color: rgb(65, 65, 65);
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      outline: none;
+      height: 40px;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chat" id="chatBox" style="width: 1000px; position: absolute; right: 0px; bottom: 30px; height: 547px;">
+    <h4>programming</h4>
+    <h4 style="position: absolute; top: 20px; left: 130px;" class="menu2">></h4>
+    <div style="background-color: blue; border-radius: 1000px; width: 50px; height: 50px; position: absolute; top: 33px; right: 5px;">
+      <p style="position: absolute; right: 38.5%;">B</p>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input id="userInput" placeholder="Ask me anything..." onkeydown="checkEnter(event)" style="position: absolute; bottom: 0px; left: 326px;">
+    <button class="voice-btn" onclick="toggleVoice()" style="position: absolute; bottom: 0px; right: 0px; border-radius: 0px; width: 121.8px; height: 50px;">🔊 Voice: On</button>
+  </div>
+
+  <div class="menu">
+    <div class="imgcon"></div>
+    <h2 style="bottom: 510px; color: white; position: absolute; left: 110px;">BarOs AI</h2>
+    <h3 style="position: absolute; bottom: 36%; left: 10px;">Chats</h3>
+    <input type="text" style="position: absolute; bottom: 30%; width: 295px;" placeholder="Rename Your new chat">
+    <button type="button" class="z" style="position: absolute; bottom: 47%; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><img src="https://cdn-icons-png.flaticon.com/128/13862/13862638.png" alt="" style="width: 20px; height: 20px;"><p style="position: absolute; top: -6px; left: 40px;">library</p></button>
+    <button type="button" class="z" style="position: absolute; bottom: 56%; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><img src="https://cdn-icons-png.flaticon.com/128/11343/11343566.png" alt="" style="width: 30px; height: 30px; position: absolute; top: 5px; left: 10px;"><p style="position: absolute; top: -6px; left: 40px;">Search Chat</p></button>
+    <button type="button" class="z" style="position: absolute; bottom: 65%; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><img src="https://cdn-icons-png.flaticon.com/128/3573/3573196.png" alt="" style="width: 20px; height: 20px; position: absolute; top: 9px; left: 15px;"><p style="position: absolute; top: -6px; left: 40px;">New Chat</p></button>
+  </div>
+
+  <h6 style="position: absolute; bottom: -18px; left: 85px; width: 295px;">BarOs can make mistakes</h6>
+
+  <div class="f11-msg" id="f11Msg">⚠️ F11 is disabled in BarOs AI</div>
+
+  <!-- ✅ Real AI connection (do not edit below) -->
+  <script>
+    let voiceEnabled = true;
+
+    function appendMessage(sender, text, typeSpeed = 20) {
+      const chatBox = document.getElementById("chatBox");
+      const div = document.createElement("div");
+      div.className = `message ${sender}`;
+      chatBox.appendChild(div);
+      if (sender === "ai") typeText(div, text, typeSpeed);
+      else div.innerHTML = text;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function typeText(element, text, speed) {
+      element.innerHTML = "";
+      let i = 0;
+      while (i < text.length) {
+        element.innerHTML = text.slice(0, i + 1);
+        await new Promise(r => setTimeout(r, speed));
+        i++;
+      }
+      element.innerHTML = text;
+      if (voiceEnabled) speak(text);
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      appendMessage("user", msg);
+      input.value = "";
+
+      try {
+        const res = await fetch("http://localhost:3000/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+
+        if (!res.ok) throw new Error("Server error");
+        const data = await res.json();
+        appendMessage("ai", data.reply || "No reply.", 15);
+      } catch (err) {
+        appendMessage("ai", "❌ No WIFI Connecting", 15);
+      }
+    }
+
+    function checkEnter(e) {
+      if (e.key === "Enter") sendMessage();
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      const utter = new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g, ""));
+      utter.rate = 1;
+      utter.pitch = 1;
+      speechSynthesis.speak(utter);
+    }
+
+    function toggleVoice() {
+      voiceEnabled = !voiceEnabled;
+      document.querySelector(".voice-btn").textContent = voiceEnabled ? "🔊 Voice: On" : "🔇 Voice: Off";
+    }
+
+    appendMessage("ai", "👋 Hey, I’m BarOs AI. Ask me anything!", 15);
+
+    const f11Msg = document.getElementById("f11Msg");
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "F11") {
+        e.preventDefault();
+        f11Msg.classList.add("show");
+        setTimeout(() => f11Msg.classList.remove("show"), 3000);
+      }
+    });
+  </script>
+</body>
+</html>
